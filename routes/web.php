@@ -114,8 +114,8 @@ Route::get('twitter/callback', ['as' => 'twitter.callback', function() {
 
 
 			Session::put('access_token', $token);
-
-			return Redirect::to('/')->with('flash_notice', 'Congrats! You\'ve successfully signed in with Twitter!');
+            flash('Congrats! You\'ve successfully signed in with Twitch!')->success();
+			return Redirect::to('/');
 		}
 
 		//return Redirect::route('twitter.error')->with('flash_error', 'Crab! Something went wrong while signing you up!');
@@ -150,7 +150,8 @@ Route::get('/twitch/callback/', function(Illuminate\Http\Request $request){
     $user->twitch_id = $twitchUser['_id'];
     $user->save();
 
-    return Redirect::to('/')->with('flash_notice', 'Congrats! You\'ve successfully signed in with Twitch!');
+    flash('Congrats! You\'ve successfully signed in with Twitch!')->success();
+    return Redirect::to('/');
 
     /**
      * Find or create user (this expects a twitch_id column in your users table).

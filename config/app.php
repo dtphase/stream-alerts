@@ -183,6 +183,7 @@ return [
         Zarlach\TwitchApi\Providers\TwitchApiServiceProvider::class,
 
         Collective\Html\HtmlServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
     ],
 
     /*
