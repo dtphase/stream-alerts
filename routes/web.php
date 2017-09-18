@@ -150,6 +150,8 @@ Route::get('/twitch/callback/', function(Illuminate\Http\Request $request){
     $user->twitch_id = $twitchUser['_id'];
     $user->save();
 
+    return Redirect::to('/')->with('flash_notice', 'Congrats! You\'ve successfully signed in with Twitch!');
+
     /**
      * Find or create user (this expects a twitch_id column in your users table).
      *

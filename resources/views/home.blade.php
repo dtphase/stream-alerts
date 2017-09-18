@@ -14,7 +14,8 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <a href="/twitter/login">Connect Twitter</a><br />
+                    <a href="/twitch/login">Connect Twitch</a>
                 </div>
             </div>
         </div>
