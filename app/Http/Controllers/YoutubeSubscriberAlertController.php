@@ -27,10 +27,11 @@ class YoutubeSubscriberAlertController extends Controller
         $auth_code = $request->input('code');
 
         $access_token = Google::getClient()->authenticate($auth_code);
-        dump($access_token);
+        //dump($access_token);
         \Auth::user()->youtube_token = serialize($access_token);
         \Auth::user()->save();
-
+        flash()->success('You\'ve signed in with YouTube successfully');
+        \Redirect::to('/')->send();
     }
     public function getSubscribers() {
         $part = 'subscriberSnippet';
