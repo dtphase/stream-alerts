@@ -50,6 +50,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('youtube/login', 'YoutubeSubscriberAlertController@index');
+
+Route::get('youtube/callback', 'YoutubeSubscriberAlertController@callback');
+
+Route::get('youtube/subscribers', 'YoutubeSubscriberAlertController@getSubscribers');
 
 Route::get('twitter/login', ['as' => 'twitter.login', function(){
 	// your SIGN IN WITH TWITTER  button should point to this route

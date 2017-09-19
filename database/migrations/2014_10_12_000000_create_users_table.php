@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->text('twitter_token')->nullable();
             $table->text('twitch_id')->nullable();
+            $table->text('youtube_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

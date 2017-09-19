@@ -21,6 +21,8 @@ class CreateTwitchFollowerAlertsTable extends Migration
             $table->boolean('alerted')->default(0);
             $table->timestamps();
         });
+
+        DB::table('twitch_follower_alerts')->insert(['user_id' => -1, 'twitch_id' => -1, 'data' => 'Inital entry', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()]);
     }
 
     /**

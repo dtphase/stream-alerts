@@ -184,6 +184,8 @@ return [
 
         Collective\Html\HtmlServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
+
+        PulkitJalan\Google\GoogleServiceProvider::class
     ],
 
     /*
@@ -241,6 +243,8 @@ return [
 
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+
+        'Google' => PulkitJalan\Google\Facades\Google::class
     ],
 
 ];

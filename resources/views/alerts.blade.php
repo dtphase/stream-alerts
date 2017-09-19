@@ -20,6 +20,7 @@
             var twitterFollowJSON;
             var twitterRetweetJSON;
             var twitchFollowJSON;
+            var youtubeSubscriberJSON;
 
             var queue = [];
 
@@ -51,6 +52,11 @@
 
                 twitchFollowJSON = $.get({
                     url: "{{ asset('json/AnimationData/' . Auth::user()->id . '/TwitchFollow/data.json') }}",
+                    type: "GET",
+                });
+
+                youtubeSubscriberJSON = $.get({
+                    url: "{{ asset('json/AnimationData/' . Auth::user()->id . '/YoutubeSubscriber/data.json') }}",
                     type: "GET",
                 });
             }
@@ -94,6 +100,11 @@
 
                         case 'twitch_follow':
                             var animationData = twitchFollowJSON.responseJSON;
+                            animationData.layers[0].t.d.k[0].s.t = name.toLowerCase();
+                            break;
+
+                        case 'youtube_subscriber':
+                            var animationData = youtubeSubscriberJSON.responseJSON;
                             animationData.layers[0].t.d.k[0].s.t = name.toLowerCase();
                             break;
 
@@ -185,6 +196,20 @@
                 });
             }
 
+            function getYoutubeSubscribers() {
+                console.log('Sending AJAX request...');
+                $.ajax({
+                type: "GET",
+                url: "/youtube/subscribers",
+                }).done(function(msg) {
+                    console.log('success');
+                }).fail(function() {
+                    console.log('error');
+                }).always(function() {
+                    setTimeout('getYoutubeSubscribers', 120000);
+                });
+            }
+
             //TODO: fix timeout times + add ajax for calling twitter/followers
             //TODO streaming twitter
             $(function() {
@@ -193,6 +218,7 @@
                 setTimeout('getAlerts()', 1000);
                 setTimeout('displayAlert()', 2000);
                 setTimeout('getTwitchFollowers()', 30000);
+                setTimeout('getYoutubeSubscribers()', 60000);
                 setTimeout('getTwitterFollowers()', 90000);
                 setTimeout('getTwitterRetweets()', 120000);
             });

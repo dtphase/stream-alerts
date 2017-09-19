@@ -24,9 +24,6 @@ class AlertController extends Controller
 
     protected function processAlerts() {
         $twitterFollowers = TwitterFollowerAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
-        $twitterRetweets = TwitterRetweetAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
-        $twitchFollowers = TwitchFollowerAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
-
         foreach($twitterFollowers as $follower) {
             $data = unserialize($follower->data);
             $userID = Auth::user()->id;
@@ -39,9 +36,9 @@ class AlertController extends Controller
             ]);
 
         }
-
         TwitterFollowerAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
 
+        $twitterRetweets = TwitterRetweetAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
         foreach($twitterRetweets as $retweet) {
             $data = unserialize($retweet->data);
             $userID = Auth::user()->id;
@@ -53,9 +50,9 @@ class AlertController extends Controller
                 'name' => $name,
             ]);
         }
-
         TwitterRetweetAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
 
+        $twitchFollowers = TwitchFollowerAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
         foreach($twitchFollowers as $follower) {
             $data = unserialize($follower->data);
             $userID = Auth::user()->id;
@@ -68,8 +65,22 @@ class AlertController extends Controller
             ]);
 
         }
-
         TwitchFollowerAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
+
+        $youtubeSubscribers = YoutubeSubscriberAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
+        foreach($youtubeSubscribers as $follower) {
+
+            $userID = Auth::user()->id;
+            $name = $follower->data;
+            $type = 'youtube_subscriber';
+            Alert::create([
+                'user_id' => $userID,
+                'type' => $type,
+                'name' => $name,
+            ]);
+
+        }
+        YoutubeSubscriberAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
     }
 
     public function test() {
