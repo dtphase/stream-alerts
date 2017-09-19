@@ -15,7 +15,7 @@
                     @endif
 
                     <a href="/twitter/login">Connect Twitter</a><br />
-                    <a href="/twitch/login">Connect Twitch</a>
+                    <a href="/twitch/login">Connect Twitch</a><br />
                     <a href="/youtube/login">Connect Youtube</a>
                 </div>
             </div>
