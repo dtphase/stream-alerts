@@ -7,6 +7,7 @@ use App\Alert;
 use App\TwitterRetweetAlert;
 use App\TwitterFollowerAlert;
 use App\TwitchFollowerAlert;
+use App\YoutubeSubscriberAlert;
 use Auth;
 use App\Events\AlertEvent;
 
