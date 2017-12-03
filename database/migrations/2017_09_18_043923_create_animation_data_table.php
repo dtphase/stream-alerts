@@ -13,13 +13,13 @@ class CreateAnimationDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('animation_data', function (Blueprint $table) {
+        /*Schema::create('animation_data', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id');
             $table->string('type');
             $table->text('json');
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
