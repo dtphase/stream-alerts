@@ -106,7 +106,7 @@
                         case 'youtube_subscriber':
                             var animationData = youtubeSubscriberJSON.responseJSON;
                             console.log(animationData);
-                            animationData.layers[0].t.d.k[0].s.t = name.toLowerCase();
+                            animationData.layers[1].t.d.k[0].s.t = name.toLowerCase();
                             break;
 
                         default:
