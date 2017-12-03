@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateYoutubeSubscriberAlertsTable extends Migration
+class CreateYoutubeSubscribersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateYoutubeSubscriberAlertsTable extends Migration
      */
     public function up()
     {
-        Schema::create('youtube_subscriber_alerts', function (Blueprint $table) {
+        Schema::create('youtube_subscribers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('user_id');
             $table->string('youtube_id');
@@ -22,7 +22,7 @@ class CreateYoutubeSubscriberAlertsTable extends Migration
             $table->timestamps();
         });
 
-        DB::table('youtube_subscriber_alerts')->insert(['user_id' => -1, 'youtube_id' => -1, 'data' => 'Inital entry', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()]);
+        DB::table('youtube_subscribers')->insert(['user_id' => -1, 'youtube_id' => -1, 'data' => 'Inital entry', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()]);
     }
 
     /**
@@ -32,6 +32,6 @@ class CreateYoutubeSubscriberAlertsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('youtube_subscriber_alerts');
+        Schema::dropIfExists('youtube_subscribers');
     }
 }

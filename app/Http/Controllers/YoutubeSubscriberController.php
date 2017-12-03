@@ -5,22 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Google;
 
-class YoutubeSubscriberAlertController extends Controller
+class YoutubeSubscriberController extends Controller
 {
     public function index() {
-        $part = 'subscriberSnippet';
-        $params = [
-            'myRecentSubscribers' => true,
-        ];
+        $subscriberTime = \App\YoutubeSubscriber::orderBy('created_at', 'desc')->first();
+        if($subscriberTime === null || \Carbon\Carbon::now()->gt($subscriberTime->created_at->addMinutes(1.5))) {
+            $part = 'subscriberSnippet';
+            $params = [
+                'myRecentSubscribers' => true,
+            ];
 
-        $client = Google::getClient();
-        $youtube = Google::make('YouTube');
-        $client->addScope('https://www.googleapis.com/auth/youtube');
-        $url = $client->createAuthUrl();
+            $client = Google::getClient();
+            $youtube = Google::make('YouTube');
+            $client->addScope('https://www.googleapis.com/auth/youtube');
+            $url = $client->createAuthUrl();
 
-        \Redirect::to($url)->send();
-        //$youtube = Google::make('YouTube');
-        //dd($youtube->subscriptions->listSubscriptions($part, $params));
+            \Redirect::to($url)->send();
+            //$youtube = Google::make('YouTube');
+            //dd($youtube->subscriptions->listSubscriptions($part, $params));
+        }
     }
 
     public function callback(\Illuminate\Http\Request $request) {
@@ -64,13 +67,13 @@ class YoutubeSubscriberAlertController extends Controller
     {
         return \Validator::make($data, [
             'user_id' => 'required',
-            'youtube_id' => 'required|unique:youtube_subscriber_alerts',
+            'youtube_id' => 'required|unique:youtube_subscribers',
             'data' => 'required',
         ])->invalid();
     }
 
     protected function create(array $data) {
-        \App\YoutubeSubscriberAlert::create([
+        \App\YoutubeSubscriber::create([
             'user_id' => $data['user_id'],
             'youtube_id' => $data['youtube_id'],
             'data' => $data['data'],

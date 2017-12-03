@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTwitterFollowerAlertsTable extends Migration
+class CreateTwitchFollowersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateTwitterFollowerAlertsTable extends Migration
      */
     public function up()
     {
-        Schema::create('twitter_follower_alerts', function (Blueprint $table) {
+        Schema::create('twitch_followers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('user_id'); //ID of the client using the s]ite
-            $table->string('twitter_id'); //ID from the API
+            $table->string('user_id'); //ID of the client using the site
+            $table->string('twitch_id'); //ID of the client using the site
             $table->text('data');
             $table->boolean('alerted')->default(0);
             $table->timestamps();
         });
 
-        DB::table('twitter_follower_alerts')->insert(['user_id' => -1, 'twitter_id' => -1, 'data' => 'Inital entry', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()]);
+        DB::table('twitch_followers')->insert(['user_id' => -1, 'twitch_id' => -1, 'data' => 'Inital entry', 'created_at' => \Carbon\Carbon::now(), 'updated_at' => \Carbon\Carbon::now()]);
     }
 
     /**
@@ -32,6 +32,6 @@ class CreateTwitterFollowerAlertsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('twitter_follower_alerts');
+        Schema::dropIfExists('twitch_followers');
     }
 }

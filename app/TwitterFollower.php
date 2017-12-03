@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-
-class YoutubeSubscriberAlert extends Model
+class TwitterFollower extends Model
 {
     protected $fillable = [
-        'user_id', 'youtube_id', 'data',
+        'user_id', 'twitter_id', 'data',
     ];
+
+
 }

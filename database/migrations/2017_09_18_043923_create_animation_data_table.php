@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAnimationDatasTable extends Migration
+class CreateAnimationDataTable extends Migration
 {
     /**
      * Run the migrations.
@@ -29,6 +29,6 @@ class CreateAnimationDatasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('animation_datas');
+        Schema::dropIfExists('animation_data');
     }
 }

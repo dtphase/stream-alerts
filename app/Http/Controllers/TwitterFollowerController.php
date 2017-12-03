@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 
-class TwitterFollowerAlertController extends Controller
+class TwitterFollowerController extends Controller
 {
     public function index() {
 
-        $followTime = \App\TwitterFollowerAlert::orderBy('created_at', 'desc')->first()->created_at;
-        if(\Carbon\Carbon::now()->gt($followTime->addMinutes(1.5))) {
+        $followTime = \App\TwitterFollower::orderBy('created_at', 'desc')->first();
+        if($followTime === null || \Carbon\Carbon::now()->gt($followTime->created_at->addMinutes(1.5))) {
             //Adds a request to the database to record when the API was last accessed
             $data = [
                 'user_id' => -1,
@@ -45,13 +45,13 @@ class TwitterFollowerAlertController extends Controller
     {
         return \Validator::make($data, [
             'user_id' => 'required',
-            'twitter_id' => 'required|unique:twitter_follower_alerts',
+            'twitter_id' => 'required|unique:twitter_followers',
             'data' => 'required',
         ])->invalid();
     }
 
     protected function create(array $data) {
-        \App\TwitterFollowerAlert::create([
+        \App\TwitterFollower::create([
             'user_id' => $data['user_id'],
             'twitter_id' => $data['twitter_id'],
             'data' => serialize($data['data']),

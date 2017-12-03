@@ -218,10 +218,10 @@
                 refreshJSON();
                 setTimeout('getAlerts()', 1000);
                 setTimeout('displayAlert()', 2000);
-                setTimeout('getTwitchFollowers()', 30000);
-                setTimeout('getYoutubeSubscribers()', 60000);
-                setTimeout('getTwitterFollowers()', 90000);
-                setTimeout('getTwitterRetweets()', 120000);
+                setTimeout('getTwitchFollowers()', 3000);
+                setTimeout('getYoutubeSubscribers()', 6000);
+                setTimeout('getTwitterFollowers()', 9000);
+                setTimeout('getTwitterRetweets()', 12000);
             });
 
 

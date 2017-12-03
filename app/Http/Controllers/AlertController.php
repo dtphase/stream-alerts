@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Alert;
-use App\TwitterRetweetAlert;
-use App\TwitterFollowerAlert;
-use App\TwitchFollowerAlert;
-use App\YoutubeSubscriberAlert;
+use App\TwitterRetweet;
+use App\TwitterFollower;
+use App\TwitchFollower;
+use App\YoutubeSubscriber;
 use Auth;
 use App\Events\AlertEvent;
 
@@ -24,36 +24,39 @@ class AlertController extends Controller
     }
 
     protected function processAlerts() {
-        $twitterFollowers = TwitterFollowerAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
-        foreach($twitterFollowers as $follower) {
-            $data = unserialize($follower->data);
-            $userID = Auth::user()->id;
-            $name = '@' . $data->screen_name;
-            $type = 'twitter_follow';
-            Alert::create([
-                'user_id' => $userID,
-                'type' => $type,
-                'name' => $name,
-            ]);
+        if(Auth::user()->twitter_token != NULL) {
+            $twitterFollowers = TwitterFollower::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
+            foreach($twitterFollowers as $follower) {
+                $data = unserialize($follower->data);
+                $userID = Auth::user()->id;
+                $name = '@' . $data->screen_name;
+                $type = 'twitter_follow';
+                Alert::create([
+                    'user_id' => $userID,
+                    'type' => $type,
+                    'name' => $name,
+                ]);
 
+            }
+
+            TwitterFollower::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
+
+            $twitterRetweets = TwitterRetweet::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
+            foreach($twitterRetweets as $retweet) {
+                $data = unserialize($retweet->data);
+                $userID = Auth::user()->id;
+                $name = '@' . $data->user->screen_name;
+                $type = 'twitter_retweet';
+                Alert::create([
+                    'user_id' => $userID,
+                    'type' => $type,
+                    'name' => $name,
+                ]);
+            }
+            TwitterRetweet::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
         }
-        TwitterFollowerAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
 
-        $twitterRetweets = TwitterRetweetAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
-        foreach($twitterRetweets as $retweet) {
-            $data = unserialize($retweet->data);
-            $userID = Auth::user()->id;
-            $name = '@' . $data->user->screen_name;
-            $type = 'twitter_retweet';
-            Alert::create([
-                'user_id' => $userID,
-                'type' => $type,
-                'name' => $name,
-            ]);
-        }
-        TwitterRetweetAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
-
-        $twitchFollowers = TwitchFollowerAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
+        $twitchFollowers = TwitchFollower::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
         foreach($twitchFollowers as $follower) {
             $data = unserialize($follower->data);
             $userID = Auth::user()->id;
@@ -66,9 +69,9 @@ class AlertController extends Controller
             ]);
 
         }
-        TwitchFollowerAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
+        TwitchFollower::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
 
-        $youtubeSubscribers = YoutubeSubscriberAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
+        $youtubeSubscribers = YoutubeSubscriber::where('user_id', Auth::user()->id)->where('alerted', 0)->get();
         foreach($youtubeSubscribers as $follower) {
 
             $userID = Auth::user()->id;
@@ -81,7 +84,22 @@ class AlertController extends Controller
             ]);
 
         }
-        YoutubeSubscriberAlert::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
+        YoutubeSubscriber::where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
+
+        $twitchSubscribers = \DB::table('twitch_subscribers')->where('user_id', Auth::user()->id)->where('alerted', 0)->get();
+        foreach($twitchSubscribers as $subscriber) {
+
+            $data = explode("++", $subscriber->data);
+            if(count($data) == 5) {
+                Alert::create([
+                    'user_id' => $userID, //TODO: fix this
+                    'type' => $type,
+                    'name' => $name,
+                ]);
+            }
+
+        }
+        \DB::table('twitch_subscribers')->where('user_id', Auth::user()->id)->where('alerted', 0)->update(['alerted' => 1]);
     }
 
     public function test() {

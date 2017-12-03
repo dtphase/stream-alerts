@@ -26,12 +26,12 @@ Route::post('/uploadfile','AnimationDataController@showUploadFile');
 
 Route::get('/test', 'AlertController@test')->middleware('auth');
 
-Route::get('/twitter/followers', 'TwitterFollowerAlertController@index')->middleware('auth');
+Route::get('/twitter/followers', 'TwitterFollowerController@index')->middleware('auth');
 
 //TODO: delete RTs table every 12 hours after first entry
-Route::get('/twitter/retweets', 'TwitterRetweetAlertController@index')->middleware('auth');
+Route::get('/twitter/retweets', 'TwitterRetweetController@index')->middleware('auth');
 
-Route::get('/twitch/followers', 'TwitchFollowerAlertController@index')->middleware('auth');
+Route::get('/twitch/followers', 'TwitchFollowerController@index')->middleware('auth');
 
 Route::group(['middleware' => ['web']], function () {
     Route::get('/alerts/get', 'AlertController@index')->middleware('auth');
@@ -50,11 +50,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('youtube/login', 'YoutubeSubscriberAlertController@index');
+Route::get('youtube/login', 'YoutubeSubscriberController@index');
 
-Route::get('youtube/callback', 'YoutubeSubscriberAlertController@callback');
+Route::get('youtube/callback', 'YoutubeSubscriberController@callback');
 
-Route::get('youtube/subscribers', 'YoutubeSubscriberAlertController@getSubscribers');
+Route::get('youtube/subscribers', 'YoutubeSubscriberController@getSubscribers');
 
 Route::get('twitter/login', ['as' => 'twitter.login', function(){
 	// your SIGN IN WITH TWITTER  button should point to this route
@@ -153,6 +153,8 @@ Route::get('/twitch/callback/', function(Illuminate\Http\Request $request){
 
     $user = Auth::user();
     $user->twitch_id = $twitchUser['_id'];
+    $user->twitch_login = $twitchUser['name'];
+    $user->twitch_token = $response['access_token'];
     $user->save();
 
     flash('Congrats! You\'ve successfully signed in with Twitch!')->success();
