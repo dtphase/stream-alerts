@@ -41,6 +41,29 @@ class TwitterFollowerController extends Controller
         }
     }
 
+    public function names() {
+        $names = file_get_contents('/mnt/g/Scripts/names.txt');
+        $n_array = explode(',', $names);
+        $takenNames = array();
+        $chunked = array_chunk($n_array, 99);
+
+        foreach($chunked as $chunk) {
+            $names = implode(',', $chunk);
+            $params = ['screen_name' => $names];
+            $followersJSON = \Twitter::getUsersLookup($params);
+            foreach($followersJSON as $follower) {
+                array_push($takenNames,$follower->screen_name);
+            }
+        }
+
+        $n_array = array_map('strtolower', $n_array);
+        $takenNames = array_map('strtolower', $takenNames);
+        echo "<p>" . implode(', ', $n_array) . "</p>";
+        echo "<p>" . implode(', ', $takenNames) . "</p>";
+        $diffNames = array_diff($n_array, $takenNames);
+        echo "<p>" . implode(', ', $diffNames) . "</p>";
+    }
+
     protected function validator(array $data)
     {
         return \Validator::make($data, [

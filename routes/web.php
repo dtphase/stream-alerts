@@ -26,6 +26,8 @@ Route::post('/uploadfile','AnimationDataController@showUploadFile');
 
 Route::get('/test', 'AlertController@test')->middleware('auth');
 
+Route::get('/twitter/names', 'TwitterFollowerController@names')->middleware('auth');
+
 Route::get('/twitter/followers', 'TwitterFollowerController@index')->middleware('auth');
 
 //TODO: delete RTs table every 12 hours after first entry
